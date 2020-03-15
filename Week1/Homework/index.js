@@ -1,0 +1,16 @@
+Web3 = require('web3')
+web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"))
+
+var abi = JSON.parse('[{"constant":true,"inputs":[],"name":"currentCalls","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"lenTickets","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"number","type":"uint256"}],"name":"pickNumber","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"tickets","outputs":[{"name":"player","type":"address"},{"name":"betAmount","type":"uint256"},{"name":"number","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"finishRound","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"random","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"list","type":"address[]"},{"name":"value","type":"address"}],"name":"listContain","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"minBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"winners","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"winningNumber","type":"uint256"}],"name":"reward","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"player","type":"address"}],"name":"isValidPlayer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"currentBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"maxCalls","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"players","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_minBet","type":"uint256"},{"name":"_maxCalls","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]'); 
+var contract = web3.eth.contract(abi);
+var contractInstance = contract.at("0xbbe595df857805ab3734f15be990f9a30cbb89f3");
+
+function callPickNumber() {
+    // call the contract
+    console.log("param");
+    var param = parseInt(document.getElementById('value').value);
+    var bet = parseInt(document.getElementById('bet').value);
+    console.log(param);
+    contractInstance.pickNumber(param, {from: web3.eth.accounts[0], gas: 1000000, value: bet});
+    console.log(contractInstance);
+}

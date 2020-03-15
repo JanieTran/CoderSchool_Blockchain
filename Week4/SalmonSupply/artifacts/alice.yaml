@@ -1,0 +1,17 @@
+---
+name: "alice-salmon"
+
+x-type: "hlfv1"
+
+description: "Salmon Network - Client definition for Alice"
+
+version: "1.0"
+
+client:
+  organization: Alice
+
+  credentialStore:
+    path: "./fabric-client-kv-alice"
+    cryptoStore:
+      path: "./tmp/fabric-client-kv-alice"
+    wallet: wallet-name

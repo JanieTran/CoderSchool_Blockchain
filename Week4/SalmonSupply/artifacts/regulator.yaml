@@ -1,0 +1,17 @@
+---
+name: "regulator-salmon"
+
+x-type: "hlfv1"
+
+description: "Salmon Network - Client definition for Regulator"
+
+version: "1.0"
+
+client:
+  organization: Regulator
+  
+  credentialStore:
+    path: "./fabric-client-kv-regulator"
+    cryptoStore:
+      path: "./tmp/fabric-client-kv-regulator"
+    wallet: wallet-name

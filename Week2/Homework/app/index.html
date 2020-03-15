@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Jersey Shop</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./app.js"></script>
+  </head>
+
+  <body>
+
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h1 class="heading">Jersey Shop</h1>
+      </div>
+    </section>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <a href="http://localhost:8081/add_product.html">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Add Product</button>
+      </a>
+      
+      <select id="filter-categories">
+        <option value="all">Filter by Category</option>
+        <option value="Premier League">Premier League</option>
+        <option value="Serie A">Serie A</option>
+        <option value="La Liga">La Liga</option>
+      </select>
+
+      <select id="filter-status">
+        <option value="all">Filter by Status</option>
+        <option value="Unsold">Unsold</option>
+        <option value="Sold">Sold</option>
+        <option value="Buying">Buying</option>
+      </select>
+
+    </div>
+
+    <br/><br/>
+
+    <div class="container">
+      <div class="row" id="product-list">
+        
+      </div>
+    </div>
+
+  </body>
+</html>

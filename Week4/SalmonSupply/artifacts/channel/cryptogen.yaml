@@ -1,0 +1,80 @@
+
+# ---------------------------------------------------------------------------
+# "OrdererOrgs" - Definition of organizations managing orderer nodes
+# ---------------------------------------------------------------------------
+OrdererOrgs:
+  # ---------------------------------------------------------------------------
+  # Orderer
+  # ---------------------------------------------------------------------------
+  - Name: Orderer
+    Domain: salmonsupply.com
+
+    # ---------------------------------------------------------------------------
+    # "Specs" - See PeerOrgs below for complete description
+    # ---------------------------------------------------------------------------
+    Specs:
+      - Hostname: orderer
+
+# ---------------------------------------------------------------------------
+# "PeerOrgs" - Definition of organizations managing peer nodes
+# ---------------------------------------------------------------------------
+PeerOrgs:
+  # ---------------------------------------------------------------------------
+  # Regulator
+  # ---------------------------------------------------------------------------
+  - Name: Regulator
+    Domain: regulator.salmonsupply.com
+    EnableNodeOUs: false
+    Template:
+      Count: 1
+      SANS:
+        - "localhost"
+    Users:
+      Count: 1
+    CA:
+      Hostname: ca
+
+  # ---------------------------------------------------------------------------
+  # Fredrick
+  # ---------------------------------------------------------------------------
+  - Name: Fredrick
+    Domain: fredrick.salmonsupply.com
+    EnableNodeOUs: false
+    Template:
+      Count: 1
+      SANS:
+        - "localhost"
+    Users:
+      Count: 1
+    CA:
+      Hostname: ca
+
+  # ---------------------------------------------------------------------------
+  # Alice
+  # ---------------------------------------------------------------------------
+  - Name: Alice
+    Domain: alice.salmonsupply.com
+    EnableNodeOUs: false
+    Template:
+      Count: 1
+      SANS:
+        - "localhost"
+    Users:
+      Count: 1
+    CA:
+      Hostname: ca
+
+  # ---------------------------------------------------------------------------
+  # Bob
+  # ---------------------------------------------------------------------------
+  - Name: Bob
+    Domain: bob.salmonsupply.com
+    EnableNodeOUs: false
+    Template:
+      Count: 1
+      SANS:
+        - "localhost"
+    Users:
+      Count: 1
+    CA:
+      Hostname: ca

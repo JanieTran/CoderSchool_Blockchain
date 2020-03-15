@@ -1,0 +1,268 @@
+---
+name: "salmon-fabric"
+
+x-type: "hlfv1"
+
+description: "Salmon Network"
+
+#==============================================================================================================
+# CHANNELS
+#==============================================================================================================
+
+channels:
+  fredrick-alice:
+    orderers:
+      - salmonsupply.com
+
+    peers:
+      peer0.fredrick.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.alice.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        
+    chaincodes:
+      - salmon_price_cc:v0
+
+  fredrick-bob:
+    orderers:
+      - salmonsupply.com
+
+    peers:
+      peer0.fredrick.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.bob.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+    chaincodes:
+      - salmon_price_cc:v0
+
+  transfers:
+    orderers:
+      - salmonsupply.com
+
+    peers:
+      peer0.regulator.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.fredrick.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.alice.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.bob.salmonsupply.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+#==============================================================================================================
+# ORGANISATIONS
+#==============================================================================================================
+
+organizations:
+  # the profile will contain public information about organizations other than the one it belongs to.
+  # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # peers with a public URL to send transaction proposals. The file will not contain private
+  # information reserved for members of the organization, such as admin key and certificate,
+  # fabric-ca registrar enroll ID and secret, etc.
+  Regulator:
+    mspid: RegulatorMSP
+
+    peers:
+      - peer0.regulator.salmonsupply.com
+
+    # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
+    # network. Typically certificates provisioning is done in a separate process outside of the
+    # runtime network. Fabric-CA is a special certificate authority that provides a REST APIs for
+    # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
+    # Fabric-CA servers.
+    certificateAuthorities:
+      - ca-regulator
+
+    # [Optional]. If the application is going to make requests that are reserved to organization
+    # administrators, including creating/updating channels, installing/instantiating chaincodes, it
+    # must have access to the admin identity represented by the private key and signing certificate.
+    # Both properties can be the PEM string or local path to the PEM file. Note that this is mainly for
+    # convenience in development mode, production systems should not expose sensitive information
+    # this way. The SDK should allow applications to set the org admin identity via APIs, and only use
+    # this route as an alternative when it exists.
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/regulator.salmonsupply.com/users/Admin@regulator.salmonsupply.com/msp/keystore/key.pem
+    signedCert:
+      path: crypto-config/peerOrganizations/regulator.salmonsupply.com/users/Admin@regulator.salmonsupply.com/msp/signcerts/Admin@regulator.salmonsupply.com-cert.pem
+
+  Fredrick:
+    mspid: FredrickMSP
+    peers:
+      - peer0.fredrick.salmonsupply.com
+    certificateAuthorities:
+      - ca-fredrick
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/fredrick.salmonsupply.com/users/Admin@fredrick.salmonsupply.com/msp/keystore/key.pem
+    signedCert:
+      path: crypto-config/peerOrganizations/fredrick.salmonsupply.com/users/Admin@fredrick.salmonsupply.com/msp/signcerts/Admin@fredrick.salmonsupply.com-cert.pem
+
+  Alice:
+    mspid: AliceMSP
+    peers:
+      - peer0.alice.salmonsupply.com
+    certificateAuthorities:
+      - ca-alice
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/alice.salmonsupply.com/users/Admin@alice.salmonsupply.com/msp/keystore/key.pem
+    signedCert:
+      path: crypto-config/peerOrganizations/alice.salmonsupply.com/users/Admin@alice.salmonsupply.com/msp/signcerts/Admin@alice.salmonsupply.com-cert.pem
+
+  Bob:
+    mspid: BobMSP
+    peers:
+      - peer0.bob.salmonsupply.com
+    certificateAuthorities:
+      - ca-bob
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/bob.salmonsupply.com/users/Admin@bob.salmonsupply.com/msp/keystore/key.pem
+    signedCert:
+      path: crypto-config/peerOrganizations/bob.salmonsupply.com/users/Admin@bob.salmonsupply.com/msp/signcerts/Admin@bob.salmonsupply.com-cert.pem
+
+#==============================================================================================================
+# ORDERERS
+#==============================================================================================================
+
+orderers:
+  salmonsupply.com:
+    url: grpcs://localhost:7050
+
+    grpcOptions:
+      ssl-target-name-override: salmonsupply.com
+      grpc-max-send-message-length: 15
+
+    tlsCACerts:
+      path: crypto-config/ordererOrganizations/salmonsupply.com/orderers/orderer.salmonsupply.com/tls/ca.crt
+
+#==============================================================================================================
+# PEERS
+#==============================================================================================================
+
+peers:
+  peer0.regulator.salmonsupply.com:
+    # this URL is used to send endorsement and query requests
+    url: grpcs://localhost:7051
+
+    # this URL is used to connect the EventHub and registering event listeners
+    eventUrl: grpcs://localhost:7053
+
+    grpcOptions:
+      ssl-target-name-override: peer0.regulator.salmonsupply.com
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/regulator.salmonsupply.com/peers/peer0.regulator.salmonsupply.com/tls/ca.crt
+
+  peer0.fredrick.salmonsupply.com:
+    url: grpcs://localhost:7051
+
+    eventUrl: grpcs://localhost:7053
+
+    grpcOptions:
+      ssl-target-name-override: peer0.fredrick.salmonsupply.com
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/fredrick.salmonsupply.com/peers/peer0.fredrick.salmonsupply.com/tls/ca.crt
+
+  peer0.alice.salmonsupply.com:
+    url: grpcs://localhost:7051
+
+    eventUrl: grpcs://localhost:7053
+
+    grpcOptions:
+      ssl-target-name-override: peer0.alice.salmonsupply.com
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/alice.salmonsupply.com/peers/peer0.alice.salmonsupply.com/tls/ca.crt
+
+  peer0.bob.salmonsupply.com:
+    # this URL is used to send endorsement and query requests
+    url: grpcs://localhost:7051
+
+    # this URL is used to connect the EventHub and registering event listeners
+    eventUrl: grpcs://localhost:7053
+
+    grpcOptions:
+      ssl-target-name-override: peer0.bob.salmonsupply.com
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/bob.salmonsupply.com/peers/peer0.bob.salmonsupply.com/tls/ca.crt
+
+#==============================================================================================================
+# CERTIFICATE AUTHORITIES
+#==============================================================================================================
+
+certificateAuthorities:
+  ca-regulator:
+    url: https://localhost:7054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/regulator.salmonsupply.com/ca/ca.regulator.salmonsupply.com-cert.pem
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca-regulator
+
+  ca-fredrick:
+    url: https://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/fredrick.salmonsupply.com/ca/ca.fredrick.salmonsupply.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca-fredrick
+
+  ca-alice:
+    url: https://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/alice.salmonsupply.com/ca/ca.alice.salmonsupply.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca-alice
+
+  ca-bob:
+    url: https://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/bob.salmonsupply.com/ca/ca.bob.salmonsupply.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca-bob

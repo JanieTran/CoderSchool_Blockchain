@@ -1,0 +1,13 @@
+Byzantine Fault Torelancce
+	- Byzantine Fault: somehow somebody is lying
+	- Byzantine Fault Tolerancce: tolerance against lying and fraud
+
+Splinternet
+	- a characterization of the Internet as splintering and dividing
+	due to various factors, such as technology, commerce, politics,
+	nationalism, religion, and interests
+
+IPFS
+	- decentrailised, peer-to-peer
+	- speed depends on size of the network
+	- data never lost

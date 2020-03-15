@@ -1,0 +1,17 @@
+---
+name: "bob-salmon"
+
+x-type: "hlfv1"
+
+description: "Salmon Network - Client definition for Bob"
+
+version: "1.0"
+
+client:
+  organization: Bob
+
+  credentialStore:
+    path: "./fabric-client-kv-bob"
+    cryptoStore:
+      path: "./tmp/fabric-client-kv-bob"
+    wallet: wallet-name

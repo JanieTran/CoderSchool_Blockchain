@@ -1,0 +1,22 @@
+GAS
+- Definition: fee for transaction
+- How to calculate:
+	+ defined by the number of work done
+	+ gas limit must be 21000 < x < 6000000 (?)
+	+ gas unit: gwei
+
+REQUIRE, ASSERT, REVERT
+assert(bool condition):
+	abort execution and revert state changes if condition is false (use for internal error)
+require(bool condition):
+	abort execution and revert state changes if condition is false (use for malformed input or error in external component)
+revert():
+	abort execution and revert state changes
+
+PROOF OF WORK
+
+
+UNDERFLOW, OVERFLOW
+- Underflow: value goes below lower limit
+- Overflow: value goes above upper limit
+	=> Prevent using assert()

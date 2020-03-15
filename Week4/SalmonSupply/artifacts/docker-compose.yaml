@@ -1,0 +1,174 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+
+services:
+
+  ca.regulator.salmonsupply.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-regulator
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.regulator.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.regulator.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+    ports:
+      - "6054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/regulator.salmonsupply.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    container_name: ca_regulator
+
+  ca.fredrick.salmonsupply.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-fredrick
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.fredrick.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.fredrick.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/fredrick.salmonsupply.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    container_name: ca_fredrick
+
+  ca.alice.salmonsupply.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-alice
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.alice.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.alice.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/alice.salmonsupply.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    container_name: ca_alice
+
+  ca.bob.salmonsupply.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-bob
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.bob.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.bob.salmonsupply.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+    ports:
+      - "9054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/bob.salmonsupply.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    container_name: ca_bob
+
+  orderer.salmonsupply.com:
+    container_name: salmonsupply.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/crypto/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/crypto/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/crypto/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/crypto/orderer/tls/ca.crt, /etc/hyperledger/crypto/peerOrg1/tls/ca.crt, /etc/hyperledger/crypto/peerOrg2/tls/ca.crt]
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderers
+    command: orderer
+    ports:
+      - 7050:7050
+    volumes:
+        - ./:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/salmonsupply.com/orderers/orderer.salmonsupply.com/:/etc/hyperledger/crypto/orderer
+        - ./crypto-config/peerOrganizations/fredrick.salmonsupply.com/peers/peer0.fredrick.salmonsupply.com/:/etc/hyperledger/crypto/peerOrg1
+        - ./crypto-config/peerOrganizations/alice.salmonsupply.com/peers/peer0.alice.salmonsupply.com/:/etc/hyperledger/crypto/peerOrg1
+        - ./crypto-config/peerOrganizations/bob.salmonsupply.com/peers/peer0.bob.salmonsupply.com/:/etc/hyperledger/crypto/peerOrg1
+        - ./crypto-config/peerOrganizations/regulator.salmonsupply.com/peers/peer0.regulator.salmonsupply.com/:/etc/hyperledger/crypto/peerOrg1
+
+  peer0.regulator.salmonsupply.com:
+    container_name: peer0.regulator.salmonsupply.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.regulator.salmonsupply.com
+      - CORE_PEER_LOCALMSPID=RegulatorMSP
+      - CORE_PEER_ADDRESS=peer0.regulator.salmonsupply.com:7051
+    ports:
+      - 6051:7051
+      - 6053:7053
+    volumes:
+        - ./crypto-config/peerOrganizations/regulator.salmonsupply.com/peers/peer0.regulator.salmonsupply.com/:/etc/hyperledger/crypto/peer
+    depends_on:
+      - orderer.salmonsupply.com
+
+  peer0.fredrick.salmonsupply.com:
+    container_name: peer0.fredrick.salmonsupply.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.fredrick.salmonsupply.com
+      - CORE_PEER_LOCALMSPID=FredrickMSP
+      - CORE_PEER_ADDRESS=peer0.fredrick.salmonsupply.com:7051
+    ports:
+      - 7051:7051
+      - 7053:7053
+    volumes:
+        - ./crypto-config/peerOrganizations/fredrick.salmonsupply.com/peers/peer0.fredrick.salmonsupply.com/:/etc/hyperledger/crypto/peer
+    depends_on:
+      - orderer.salmonsupply.com
+
+  peer0.alice.salmonsupply.com:
+    container_name: peer0.alice.salmonsupply.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.alice.salmonsupply.com
+      - CORE_PEER_LOCALMSPID=AliceMSP
+      - CORE_PEER_ADDRESS=peer0.alice.salmonsupply.com:7051
+    ports:
+      - 8051:7051
+      - 8053:7053
+    volumes:
+        - ./crypto-config/peerOrganizations/alice.salmonsupply.com/peers/peer0.alice.salmonsupply.com/:/etc/hyperledger/crypto/peer
+    depends_on:
+      - orderer.salmonsupply.com
+
+  peer0.bob.salmonsupply.com:
+    container_name: peer0.bob.salmonsupply.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.bob.salmonsupply.com
+      - CORE_PEER_LOCALMSPID=BobMSP
+      - CORE_PEER_ADDRESS=peer0.bob.salmonsupply.com:7051
+    ports:
+      - 9051:7051
+      - 9053:7053
+    volumes:
+        - ./crypto-config/peerOrganizations/bob.salmonsupply.com/peers/peer0.bob.salmonsupply.com/:/etc/hyperledger/crypto/peer
+    depends_on:
+      - orderer.salmonsupply.com
